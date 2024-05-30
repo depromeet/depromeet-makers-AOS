@@ -1,12 +1,12 @@
 package com.depromeet.makers
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.WindowManager
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 
 class MainActivity : AppCompatActivity() {
@@ -14,23 +14,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-            )
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-            )
-        }
-        window.statusBarColor = 0x00000000
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.statusBarColor = Color.parseColor("#e2e8f0")
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
 
         val webView = findViewById<WebView>(R.id.webview)
@@ -48,6 +34,6 @@ class MainActivity : AppCompatActivity() {
             domStorageEnabled = true
         }
 
-        webView.loadUrl("https://depromeet-makers.dev/")
+        webView.loadUrl("https://makers.depromeet.com/")
     }
 }
