@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         var isKeepSplash = true
         setContentView(R.layout.activity_main)
-
+        val webView = findViewById<WebView>(R.id.webview)
         splashScreen.setKeepOnScreenCondition {
             isKeepSplash
         }
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = Color.parseColor("#e2e8f0")
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
 
-        val webView = findViewById<WebView>(R.id.webview)
+
 
         val webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {

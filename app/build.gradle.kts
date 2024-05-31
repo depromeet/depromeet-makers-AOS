@@ -1,7 +1,19 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
+
+secrets {
+    propertiesFileName = "secrets.properties"
+}
+val secretFile = file("../secrets.properties")
+val secretProperties = Properties().apply {
+    load(secretFile.inputStream())
+}
+
 
 android {
     namespace = "com.depromeet.makers"
@@ -12,18 +24,29 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            keyPassword = secretProperties["keyPassword"]?.toString()
+            keyAlias = secretProperties["keyAlias"]?.toString()
+            storeFile = file(secretProperties["storeFile"]?.toString() ?: "")
+            storePassword = secretProperties["storePassword"]?.toString()
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
