@@ -3,6 +3,7 @@ package com.depromeet.makers
 import android.graphics.Color
 import android.os.Bundle
 import android.view.WindowManager
+import android.webkit.GeolocationPermissions
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -35,13 +36,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
         webView.webViewClient = webViewClient
-        webView.webChromeClient = WebChromeClient()
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onGeolocationPermissionsShowPrompt(
+                origin: String?,
+                callback: GeolocationPermissions.Callback?
+            ) {
+                super.onGeolocationPermissionsShowPrompt(origin, callback)
+                callback?.invoke(origin, true, false)
+            }
+        }
 
         webView.settings.apply {
             loadWithOverviewMode = true
             useWideViewPort = true
             setSupportZoom(false)
             javaScriptEnabled = true
+            setGeolocationEnabled(true)
             javaScriptCanOpenWindowsAutomatically = true
             domStorageEnabled = true
         }
